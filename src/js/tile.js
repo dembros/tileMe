@@ -21,43 +21,40 @@
     }
 
     function getOrganizedTiles(elements) {
-        nodeListToArray(els).map(function (el) {
+        return nodeListToArray(elements).map(function (el) {
             return {
                 "element": el,
                 "boundingRect": el.getBoundingClientRect()
             };
         });
     }
-
     var els = document.querySelectorAll(selector);
-
+    console.log(els);
     var organizedTiles = getOrganizedTiles(els);
 
     //FIXME: find a better way to do this part:
-    var fixme = {};
+    var tileObjs = {};
     var currentLine = 0;
-    console.log(organizedTiles);
 
-    var yArray = getUniqueCoordinates("y");
-    console.log(yArray);
-    var xArray = getUniqueCoordinates("x");
-    console.log(xArray);
-
+    var yArray = getUniqueCoordinates(organizedTiles, "y");
+    var xArray = getUniqueCoordinates(organizedTiles, "x");
 
     organizedTiles.forEach(function (tile) {
-        console.log(tile);
+
         var y = tile.boundingRect.y;
         var x = tile.boundingRect.x;
-        console.log(y);
-        if (fixme[y] === undefined) {
-            fixme[y] = {
-                "row": yArray.indexOf(y),
-                "column": xArray.indexOf(x),
-                "element": tile
-            };
-        }
-        console.log(fixme[y]);
-    });
 
-    console.log(fixme);
+        if (tileObjs[y] === undefined) {
+            tileObjs[y] = [];
+        }
+
+        tileObjs[y].push({
+            "row": yArray.indexOf(y),
+            "column": xArray.indexOf(x),
+            "element": tile
+        });
+    });
+    console.log(tileObjs);
+
+
 })();
